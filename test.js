@@ -5,9 +5,9 @@
 /**
  * Module dependencies.
  */
-var fotology = require('fotology');
 var program = require('commander');
 var search = require('image-search');
+var secrets = require("./secrets.js");
 var _ = require('underscore');
 var wget = require('wget-improved');
 
@@ -15,15 +15,6 @@ var wget = require('wget-improved');
 */
 function list(val) {
   return val.split(',');
-}
-
-/* 
-*/
-var imageMap = [];
-var _addImages = function(images) {
-	_.each(images, function(image) {
-		imageMap.push(image);
-	})
 }
  
 program
@@ -34,41 +25,28 @@ program
   .option('-o, --output [file]', 'Output Filename', 'out.jpg')
   .parse(process.argv); 
 
-//fetch image url
-// var options = {
-// };
-// var download = wget.download(program.image, program.output, options);
-// download.on('error', function(err) {
-//     console.log(err);
-// });
-// download.on('start', function(fileSize) {
-//     console.log(fileSize);
-// });
-// download.on('end', function(output) {
-//     console.log(output);
-// });
 
-//fetch all images from query list
-// _.each(program.query, function(word) {
-// 	console.log(word);
-// 	search.google(word, function(err, images) {
-// 		console.log(images);
-// 	});
-// });
-
-
-// var search = require('image-search');
-let options = {
-    size: "large", // large images only
-    language: "fr", // French
-    safe: true, // force safe search on
-    color: "white" // white cats only please
-};
-var images = [];
-fotology("cats", options, function(imageUrls) {
-	images.push(imageUrls);
+console.log(secrets);
+var Flickr = require("flickrapi"),
+  flickrOptions = {
+    api_key: secrets.FLICKR_API_KEY,
+    secret: secrets.FLICKR_SECRET
+  };
+ 
+Flickr.tokenOnly(flickrOptions, function(error, flickr) {
+  // we can now use "flickr" as our API object
+  flickr.photos.search({
+    text: "red+panda"
+  }, function(err, result) {
+    if(err) { 
+      throw new Error(err); 
+    }
+    // do something with result
+    _.each(result.photos.photo, function(photo) {
+      console.log(photo);
+      //LINK TO IMAGE SOURCE
+      var img_src = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + "s.jpg";      
+      console.log(img_src);      
+    });
+  });
 });
-
-console.log(images);
-
-

@@ -20,3 +20,4 @@ References
 
 * http://lokeshdhakar.com/projects/color-thief/
 * https://github.com/vdemedes/google-images
+* https://www.npmjs.com/package/flickrapi
