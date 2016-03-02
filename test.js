@@ -6,10 +6,12 @@
  * Module dependencies.
  */
 var program = require('commander');
+var request = require('request');
 var search = require('image-search');
 var secrets = require("./secrets.js");
 var _ = require('underscore');
 var wget = require('wget-improved');
+
 
 /*To parse the input query
 */
@@ -26,7 +28,7 @@ program
   .parse(process.argv); 
 
 
-console.log(secrets);
+// console.log(secrets);
 var Flickr = require("flickrapi"),
   flickrOptions = {
     api_key: secrets.FLICKR_API_KEY,
@@ -36,17 +38,26 @@ var Flickr = require("flickrapi"),
 Flickr.tokenOnly(flickrOptions, function(error, flickr) {
   // we can now use "flickr" as our API object
   flickr.photos.search({
-    text: "red+panda"
+    text: "blue+fish"
   }, function(err, result) {
     if(err) { 
       throw new Error(err); 
     }
     // do something with result
-    _.each(result.photos.photo, function(photo) {
-      console.log(photo);
+    _.each(result.photos.photo, function(photo) {      
       //LINK TO IMAGE SOURCE
       var img_src = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + "s.jpg";      
       console.log(img_src);      
+      var pallette_src = 'http://rainbowbot.herokuapp.com/?url=' + img_src;
+      request(pallette_src, function(err, response, body) {
+        if (!error && response.statusCode == 200) {
+          var data = JSON.parse(body);
+          console.log(data.hex);
+        } else {
+          console.log('?' + err + response + body + pallette_src);
+        }
+      });
     });
   });
 });
+
