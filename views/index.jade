@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    body
+        .container
+            .header.clearfix
+            .jumbotron
+                h1 Coke Flag Ripoff
+            ul
+                li
+                    input(type="text" placeholder="original image url")
+                li
+                    input(type="text" placeholder="words")
+                li
+                    input(type="number" min=1 max=5 placeholder=1)
+
+block additional_js
+    script(src='js/index.js')
+    script(type="text/javascript" charset="utf-8").
+        $(document).ready(function () {
+
+        });

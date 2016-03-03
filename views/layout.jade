@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+    head
+        title= title
+
+        //- bower packages
+        script(type='text/javascript', src='bower_components/angular/angular.js')
+        script(type='text/javascript', src='bower_components/jquery/dist/jquery.js')
+        script(type='text/javascript', src='bower_components/bootstrap/dist/js/bootstrap.js')
+        link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
+        link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap-theme.css')
+
+        //- custom CSS
+        link(rel='stylesheet', href='css/layout.css')
+
+
+        block additional_js
+
+        block content
